@@ -222,12 +222,14 @@ void loop() {
   String data = "",msg="", str4 = "", pm1_0, pm2_5, pm10_0;
 
   if (pms.read(pmdata)) {     // If anything comes in Serial1 (pins 0 & 1)
-    data = "mac tx ucnf 15 "+ String(pmdata.PM_AE_UG_1_0) + "D1_0" + String(pmdata.PM_AE_UG_2_5) + "D2_5" + String(pmdata.PM_AE_UG_10_0) + "D10_0";
+    msg = "mac tx ucnf 15 "+ String(pmdata.PM_AE_UG_1_0) + "D1_0" + String(pmdata.PM_AE_UG_2_5) + "D2_5" + String(pmdata.PM_AE_UG_10_0) + "D10_0";
     Serial.println(data);
     for (int i = 0; i < data.length(); i++) {
       msg += String(int(data.charAt(i)), HEX);
     }
-
+    Serial.println(msg);
+    char buf[msg.length()+1];
+    msg.toCharArray(buf,msg.length()+1);
   //}
 
 
@@ -237,7 +239,7 @@ void loop() {
   if (currentMillis - startMillis >= period)
     {
     // SEND UPLINK DATA
-    Serial2_String_Write(msg);
+    Serial2_String_Write(buf);
     startMillis = currentMillis;
     }
   // COUNT FOR SEND UPLINK
